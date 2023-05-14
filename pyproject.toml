@@ -1,0 +1,35 @@
+[project]
+name = "prmopt"
+dynamic = ["version"]
+authors = [
+  { name="Javier Ruiz Aranguren" },
+]
+description = "ChatGPT Prompt Engineering for Developers by Deeplearning Course Tests"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "License :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+dependencies = [
+  "notebook",
+  "openai"
+]
+
+
+[project.urls]
+Homepage = "https://github.com/jruizaranguren/prompt"
+"Bug Tracker" = "https://github.com/jruizaranguren/prompt/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+include = '\.pyi?$'
+line-length = 100
+target-version = ['py311']
