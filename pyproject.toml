@@ -26,6 +26,12 @@ dependencies = [
 Homepage = "https://github.com/jruizaranguren/prompt"
 "Bug Tracker" = "https://github.com/jruizaranguren/prompt/issues"
 
+[project.optional-dependencies]
+dev = [
+  "pip-tools",
+  "pipdeptree"
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

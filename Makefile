@@ -1,39 +1,42 @@
-# Some utils for development
+# Variables
+ENV_NAME := prompt
+PYTHON3 := python3.11
 
-venv:
-	python3.11 -m venv .venv
+# Targets
 
-activate:
-	. .venv/bin/activate
+.PHONY: create compile sync update clean
+
+
+create:
+	@echo "Creating virtual environment..."
+	@${PYTHON3} -m venv .venv/$(ENV_NAME)
+	@echo "Make activate command executable"
+	chmod +x .venv/$(ENV_NAME)/bin/activate
+	@echo "Environment created. Please activate with 'source .venv/$(ENV_NAME)/bin/activate'"
+
+ensurepip:
+	@. .venv/$(ENV_NAME)/bin/activate && ${PYTHON3} -m ensurepip --upgrade
+
+make-activate-executable:
+	chmod +x .venv/$(ENV_NAME)/bin/activate
+
+install-piptools:
+	@echo "Installing pip-tools..."
+	@. .venv/$(ENV_NAME)/bin/activate && ${PYTHON3} -m pip install pip-tools
+	@echo "pip-tools installed"
 
 compile:
-	pip-compile --resolver=backtracking -o requirements.txt pyproject.toml
+	@. .venv/$(ENV_NAME)/bin/activate && pip-compile --resolver=backtracking -o requirements.txt pyproject.toml
+	@. .venv/$(ENV_NAME)/bin/activate && pip-compile --resolver=backtracking --extra dev -o dev-requirements.txt pyproject.toml
 
 sync:
-	pip-sync requirements.txt
-
-install:
-	pip install -r requirements.txt
+	@. .venv/$(ENV_NAME)/bin/activate && pip-sync requirements.txt dev-requirements.txt
 
 update:
-	pip-compile --upgrade
+	@. .venv/$(ENV_NAME)/bin/activate && pip-compile --upgrade
 
 clean:
 	rm -rf .venv
-	rm -f requirements.txt
+	rm -f requirements.txt dev-requirements.txt
 
-make-activate-executable:
-	chmod +x .venv/bin/activate
-
-setup: venv make-activate-executable activate compile install
-
-help:
-	@echo "Makefile commands:"
-	@echo "  venv      - create virtual environment"
-	@echo "  activate  - activate virtual environment"
-	@echo "  compile   - compile requirements"
-	@echo "  sync      - sync requirements"
-	@echo "  install   - install requirements"
-	@echo "  update    - update requirements"
-	@echo "  clean     - clean virtual environment"
-	@echo "  setup     - setup virtual environment"
+setup: create ensurepip install-piptools compile sync
