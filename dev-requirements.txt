@@ -252,6 +252,8 @@ soupsieve==2.4.1
     # via beautifulsoup4
 stack-data==0.6.2
     # via ipython
+tenacity==8.2.2
+    # via prmopt (pyproject.toml)
 terminado==0.17.1
     # via
     #   jupyter-server

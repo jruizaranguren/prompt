@@ -18,7 +18,8 @@ classifiers = [
 
 dependencies = [
   "notebook",
-  "openai"
+  "openai",
+  "tenacity"
 ]
 
 
