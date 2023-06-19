@@ -17,3 +17,8 @@ Resource to launch notebook: https://mybinder.org/
     * Instruct the model to work out its own solution before rushing to a conclusion
 * Beware model limits: hallucinations
 * Use an iterative process
+* When summarizing try to hint:
+    * number of work/sentence/character limits
+    * intended audience
+    * the desired tone
+    * extract instead of summarize
