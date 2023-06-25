@@ -15,7 +15,9 @@ Resource to launch notebook: https://mybinder.org/
 * Give the model time to think
     * Specify the steps required to complete a task
     * Instruct the model to work out its own solution before rushing to a conclusion
-* Beware model limits: hallucinations
+* Beware model limits:
+    * hallucinations
+    * it tend to lose the critical thinking parts
 * Use an iterative process
 * When summarizing try to hint:
     * number of work/sentence/character limits
