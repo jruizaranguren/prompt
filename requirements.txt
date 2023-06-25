@@ -30,7 +30,9 @@ attrs==23.1.0
 backcall==0.2.0
     # via ipython
 beautifulsoup4==4.12.2
-    # via nbconvert
+    # via
+    #   nbconvert
+    #   prmopt (pyproject.toml)
 bleach==6.0.0
     # via nbconvert
 certifi==2023.5.7
