@@ -1,42 +1,72 @@
 # Variables
 ENV_NAME := prompt
-PYTHON3 := python3.11
+PYTHON3 := python3
+# Check if direnv is installed
+HAS_DIRENV := $(shell command -v direnv 2> /dev/null)
 
 # Targets
+.PHONY: setup compile sync update clean
 
-.PHONY: create compile sync update clean
+
+# Virtual environment setup
+
+ensurepip: check-setup
+	@direnv exec ${PWD} ${PYTHON3} -m ensurepip --upgrade
 
 
-create:
-	@echo "Creating virtual environment..."
-	@${PYTHON3} -m venv .venv/$(ENV_NAME)
-	@echo "Make activate command executable"
-	chmod +x .venv/$(ENV_NAME)/bin/activate
-	@echo "Environment created. Please activate with 'source .venv/$(ENV_NAME)/bin/activate'"
+install-piptools: check-setup
+	@direnv exec ${PWD} ${PYTHON3} -m pip install pip-tools
 
-ensurepip:
-	@. .venv/$(ENV_NAME)/bin/activate && ${PYTHON3} -m ensurepip --upgrade
 
-make-activate-executable:
-	chmod +x .venv/$(ENV_NAME)/bin/activate
+compile: check-setup
+	@direnv exec ${PWD} pip-compile --resolver=backtracking -o requirements.txt pyproject.toml
+	@direnv exec ${PWD} pip-compile --resolver=backtracking --extra dev -o dev-requirements.txt pyproject.toml
 
-install-piptools:
-	@echo "Installing pip-tools..."
-	@. .venv/$(ENV_NAME)/bin/activate && ${PYTHON3} -m pip install pip-tools
-	@echo "pip-tools installed"
 
-compile:
-	@. .venv/$(ENV_NAME)/bin/activate && pip-compile --resolver=backtracking -o requirements.txt pyproject.toml
-	@. .venv/$(ENV_NAME)/bin/activate && pip-compile --resolver=backtracking --extra dev -o dev-requirements.txt pyproject.toml
+sync: check-setup
+	@direnv exec ${PWD} pip-sync requirements.txt dev-requirements.txt
 
-sync:
-	@. .venv/$(ENV_NAME)/bin/activate && pip-sync requirements.txt dev-requirements.txt
 
-update:
-	@. .venv/$(ENV_NAME)/bin/activate && pip-compile --upgrade
+update: check-setup
+	@direnv exec ${PWD} pip-compile --upgrade
+
 
 clean:
-	rm -rf .venv
+	rm -rf .envirc .direnv
 	rm -f requirements.txt dev-requirements.txt
 
-setup: create ensurepip install-piptools compile sync
+
+check-direnv:
+	@if [ "$(HAS_DIRENV)" = "" ]; then \
+		echo "Direnv is not installed. Please install direnv first."; \
+		exit 1; \
+	fi
+
+
+check-setup: check-direnv
+	@if [ ! -f .envrc ]; then \
+		echo "Virtual environment not found. Please run 'make setup'."; \
+		exit 1; \
+	fi
+
+
+setup-env: check-direnv
+	@echo "Creating virtual environment..."
+
+	@if [ ! -f .envrc ]; then \
+		touch .envrc; \
+	fi
+
+	@if ! grep -q "layout $(PYTHON3)" .envrc; then \
+		echo "layout $(PYTHON3)" >> .envrc; \
+	fi
+
+	@direnv allow
+	@direnv reload
+
+
+setup: setup-env ensurepip install-piptools compile sync 
+	@echo "Setup complete."
+
+# Development
+

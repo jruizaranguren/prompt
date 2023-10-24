@@ -5,6 +5,26 @@ Course can be found here: https://www.deeplearning.ai/short-courses/chatgpt-prom
 
 Resource to launch notebook: https://mybinder.org/
 
+## Running the code
+
+You will need a working version of `direnv`. A script is provided and compatibility tested for Ubuntu 20 and 22:
+
+```bash
+source setup_direnv.sh
+```
+
+Then, create the virtual environment through:
+
+```bash
+make setup
+```
+
+In order to test the notebooks, you need to set the following environment variable:
+
+```bash
+OPENAI_API_KEY=<your key>
+```
+
 ## Summary
 
 * Write clear and specific instructions
