@@ -19,10 +19,16 @@ Then, create the virtual environment through:
 make setup
 ```
 
-In order to test the notebooks, you need to set the following environment variable:
+In order to test the notebooks, you need to set the following environment variables:
 
 ```bash
 OPENAI_API_KEY=<your key>
+OPENAI_API_ORG=<your org>
+```
+
+Then, you can run the notebooks through:
+
+```bash
 ```
 
 ## Summary
