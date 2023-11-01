@@ -20,7 +20,8 @@ dependencies = [
   "notebook",
   "openai",
   "tenacity",
-  "beautifulsoup4"
+  "beautifulsoup4",
+  "pypdf"
 ]
 
 

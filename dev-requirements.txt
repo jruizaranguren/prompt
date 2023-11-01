@@ -210,6 +210,8 @@ pygments==2.15.1
     # via
     #   ipython
     #   nbconvert
+pypdf==3.17.0
+    # via prmopt (pyproject.toml)
 pyproject-hooks==1.0.0
     # via build
 pyrsistent==0.19.3

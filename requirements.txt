@@ -201,6 +201,8 @@ pygments==2.15.1
     # via
     #   ipython
     #   nbconvert
+pypdf==3.17.0
+    # via prmopt (pyproject.toml)
 pyrsistent==0.19.3
     # via jsonschema
 python-dateutil==2.8.2
